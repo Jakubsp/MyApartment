@@ -1,18 +1,26 @@
 package Database;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnect {
-    private String database = "192.168.77.73/apartments";
-    private String user = "jakub@spilacek.cz";
-    private String password = "";
-    private String server = "jdbc:mysql://" + database + "?user=" + user + "&password=" + password;
+public class DBConnect extends Activity {
+    private String address;
+    private String database;
+    private String user;
+    private String password;
+    private String server = "jdbc:mysql://" + address + "/" + database + "?user=" + user + "&password=" + password;
     private Connection connection = null;
     private static DBConnect instance = null;
 
     private DBConnect() {
+        if (address == null)
+            RefreshValues();
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -44,6 +52,31 @@ public class DBConnect {
         if(instance == null)
             instance = new DBConnect();
         return instance;
+    }
+
+    public void RefreshValues() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("DBinitials", MODE_PRIVATE);
+        address = sharedPreferences.getString("address", "127.0.0.1");
+        database = sharedPreferences.getString("database", "apartments");
+        user = sharedPreferences.getString("user", "admin");
+        password = sharedPreferences.getString("password", "password");
+    }
+
+    public boolean testConnection(String address, String database, String user, String password) {
+        this.address = address;
+        this.database = database;
+        this.user = user;
+        this.password = password;
+
+        new DBConnect();
+
+        if (connection == null) {
+            RefreshValues();
+            return false;
+        }
+
+        RefreshValues();
+        return true;
     }
 
     public void closeConnection() {

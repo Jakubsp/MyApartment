@@ -6,4 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="hostdb">Host</string>
+    <string name="namedb">Název databáze</string>
+    <string name="userdb">Uživatel</string>
+    <string name="passworddb">Heslo</string>
+    <string name="btnSave">Uložit</string>
+    <string name="btnTestConn">Vyzkoušet spojení</string>
 </resources>
