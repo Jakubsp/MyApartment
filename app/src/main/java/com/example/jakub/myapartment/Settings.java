@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import Database.DBConnect;
 
 public class Settings extends AppCompatActivity {
 
@@ -13,6 +16,11 @@ public class Settings extends AppCompatActivity {
     private EditText edtUser;
     private EditText edtPassword;
     SharedPreferences sharedPreferences;
+
+    private String address;
+    private String database;
+    private String user;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,28 +35,56 @@ public class Settings extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassworddb);
 
         loadValues();
+        showValues();
     }
 
     private void loadValues() {
-        edtAddress.setText(sharedPreferences.getString("address", "127.0.0.1"));
-        edtDatabase.setText(sharedPreferences.getString("database", "apartments"));
-        edtUser.setText(sharedPreferences.getString("user", "admin"));
-        edtPassword.setText(sharedPreferences.getString("password", "password"));
+        address = sharedPreferences.getString("address", "127.0.0.1");
+        database = sharedPreferences.getString("database", "apartments");
+        user = sharedPreferences.getString("user", "admin");
+        password = sharedPreferences.getString("password", "password");
+    }
+
+    private void getValues() {
+        address = edtAddress.getText().toString();
+        database = edtDatabase.getText().toString();
+        user = edtUser.getText().toString();
+        password = edtPassword.getText().toString();
+    }
+
+    private void showValues() {
+        edtAddress.setText(address);
+        edtDatabase.setText(database);
+        edtUser.setText(user);
+        edtPassword.setText(password);
     }
 
     public void btnSaveOnClick(View v) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("address", edtAddress.getText().toString());
-        editor.putString("database", edtDatabase.getText().toString());
-        editor.putString("user", edtUser.getText().toString());
-        editor.putString("password", edtPassword.getText().toString());
+        getValues();
+
+        editor.putString("address", address);
+        editor.putString("database", database);
+        editor.putString("user", user);
+        editor.putString("password", password);
+
+        DBConnect.getInstance().setValues(address, database, user, password);
 
         editor.commit();
         onBackPressed();
     }
 
     public void btnTestConnOnClick(View v) {
+        getValues();
 
+        DBConnect.getInstance().setValues(address, database, user, password);
+        DBConnect.getInstance().newConnection();
+
+        boolean connected = false;
+        if (DBConnect.getInstance().getConnection() != null)
+            connected = true;
+
+        Toast.makeText(getApplicationContext(), connected?"Spojení navázáno":"Nebylo možné se připojit", Toast.LENGTH_SHORT).show();
     }
 }
