@@ -1,5 +1,6 @@
 package com.example.jakub.myapartment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -109,7 +110,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onPersonFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void onApartmentFragmentInteraction(Uri uri) {
 
     }
 }

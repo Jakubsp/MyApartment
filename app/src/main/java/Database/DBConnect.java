@@ -58,14 +58,11 @@ public class DBConnect{
         return instance;
     }
 
-    public void setValues(String address, String database, String user, String password) {
+    public void newConnection(String address, String database, String user, String password) {
         this.address = address;
         this.database = database;
         this.user = user;
         this.password = password;
-    }
-
-    public void newConnection() {
         if (connection != null)
             closeConnection();
         DBConnect();

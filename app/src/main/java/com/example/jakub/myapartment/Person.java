@@ -1,12 +1,20 @@
 package com.example.jakub.myapartment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.sql.Connection;
+
+import Database.DBConnect;
+import Database.proxy.PersonTableProxy;
 
 
 /**
@@ -27,10 +35,24 @@ public class Person extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mCallback;
+    private Context context;
 
     public Person() {
-        // Required empty public constructor
+
+    }
+
+    private void connectToDb() {
+        SharedPreferences shaPref = getContext().getSharedPreferences("DBinitials", Context.MODE_PRIVATE);
+        DBConnect.getInstance().newConnection(shaPref.getString("address", "127.0.0.1"),
+                shaPref.getString("database", "apartments"),
+                shaPref.getString("user", "admin"),
+                shaPref.getString("password", "password"));
+        boolean connected = false;
+        if (DBConnect.getInstance().getConnection() != null)
+            connected = true;
+
+        Toast.makeText(getContext().getApplicationContext(), connected?"Spojení navázáno":"Nebylo možné se připojit", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -67,28 +89,27 @@ public class Person extends Fragment {
         return inflater.inflate(R.layout.fragment_person, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            mCallback = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        context = mCallback.getContext();
+        if (DBConnect.getInstance().getConnection() == null) {
+            connectToDb();
+        }
+        PersonTableProxy.Select();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mCallback = null;
     }
 
     /**
@@ -102,7 +123,8 @@ public class Person extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onPersonFragmentInteraction(Uri uri);
+
+        Context getContext();
     }
 }

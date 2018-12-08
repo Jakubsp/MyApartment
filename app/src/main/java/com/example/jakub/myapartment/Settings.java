@@ -69,7 +69,7 @@ public class Settings extends AppCompatActivity {
         editor.putString("user", user);
         editor.putString("password", password);
 
-        DBConnect.getInstance().setValues(address, database, user, password);
+        DBConnect.getInstance().newConnection(address, database, user, password);
 
         editor.commit();
         onBackPressed();
@@ -78,8 +78,7 @@ public class Settings extends AppCompatActivity {
     public void btnTestConnOnClick(View v) {
         getValues();
 
-        DBConnect.getInstance().setValues(address, database, user, password);
-        DBConnect.getInstance().newConnection();
+        DBConnect.getInstance().newConnection(address, database, user, password);
 
         boolean connected = false;
         if (DBConnect.getInstance().getConnection() != null)
