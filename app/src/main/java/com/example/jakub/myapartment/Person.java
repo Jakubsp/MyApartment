@@ -5,15 +5,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.sql.Connection;
 
 import Database.DBConnect;
+import Database.oracle.PersonTable;
 import Database.proxy.PersonTableProxy;
 
 
@@ -37,6 +40,8 @@ public class Person extends Fragment {
 
     private OnFragmentInteractionListener mCallback;
     private Context context;
+
+    ListView lvPerson;
 
     public Person() {
 
@@ -90,6 +95,15 @@ public class Person extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        lvPerson = getView().findViewById(R.id.lvPerson);
+        PersonAdapter personAdapter = new PersonAdapter(getContext(), PersonTableProxy.Select());
+        lvPerson.setAdapter(personAdapter);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
@@ -103,7 +117,6 @@ public class Person extends Fragment {
         if (DBConnect.getInstance().getConnection() == null) {
             connectToDb();
         }
-        PersonTableProxy.Select();
     }
 
     @Override
