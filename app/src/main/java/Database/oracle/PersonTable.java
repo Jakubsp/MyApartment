@@ -12,7 +12,7 @@ import Database.DBConnect;
 import Database.Person;
 import Database.proxy.PersonTableProxy;
 
-import static Database.oracle.PersonCmd.SELECTALL;
+import static Database.oracle.PersonCmd.*;
 
 public class PersonTable extends PersonTableProxy {
     private Connection connection = null;
@@ -32,7 +32,7 @@ public class PersonTable extends PersonTableProxy {
     }
 
     @Override
-    protected Collection<Person> select() {
+    protected Collection<Person> selectAll() {
         people = new ArrayList<>();
         if(connection == null)
             connection = DBConnect.getInstance().getConnection();

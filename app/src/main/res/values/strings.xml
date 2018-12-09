@@ -1,19 +1,28 @@
 <resources>
-    <string name="app_name">My apartment</string>
+    <string name="app_name">Můj byt</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_subtitle">jakub@spilacek.cz</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Nastavení</string>
     <string name="hostdb">Host</string>
     <string name="namedb">Název databáze</string>
     <string name="userdb">Uživatel</string>
     <string name="passworddb">Heslo</string>
     <string name="btnSave">Uložit</string>
     <string name="btnTestConn">Vyzkoušet spojení</string>
-    <string name="viewPerson">Seznam osob</string>
+    <string name="nav_Person">Seznam osob</string>
+    <string name="nav_Apartment">Seznam bytů</string>
+    <string name="nav_Overview">Přehled</string>
+    <string name="nav_WeekProgram">Týdenní program</string>
+    <string name="btnDeletePerson">Smazat</string>
+    <string name="personName">Jméno</string>
+    <string name="personEmail">Email</string>
+    <string name="personBirth">Datum narození</string>
+    <string name="personCompanyName">Název společnosti</string>
+    <string name="personRights">Práva</string>
+    <string name="personTask">Úloha</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_person_edit">Uživatel</string>
 </resources>

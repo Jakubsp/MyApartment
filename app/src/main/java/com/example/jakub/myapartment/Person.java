@@ -1,22 +1,21 @@
 package com.example.jakub.myapartment;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.sql.Connection;
-
 import Database.DBConnect;
-import Database.oracle.PersonTable;
 import Database.proxy.PersonTableProxy;
 
 
@@ -28,7 +27,7 @@ import Database.proxy.PersonTableProxy;
  * Use the {@link Person#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Person extends Fragment {
+public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,9 +41,10 @@ public class Person extends Fragment {
     private Context context;
 
     ListView lvPerson;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public Person() {
-
+        // Required empty public constructor
     }
 
     private void connectToDb() {
@@ -99,8 +99,22 @@ public class Person extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         lvPerson = getView().findViewById(R.id.lvPerson);
-        PersonAdapter personAdapter = new PersonAdapter(getContext(), PersonTableProxy.Select());
+        final PersonAdapter personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAll());
         lvPerson.setAdapter(personAdapter);
+
+        lvPerson.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Database.Person person = (Database.Person)personAdapter.getItem(position);
+
+                Intent intent = new Intent(getContext(), PersonEdit.class);
+                startActivity(intent);
+            }
+        });
+
+        swipeRefreshLayout = getView().findViewById(R.id.srlPerson);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -125,6 +139,16 @@ public class Person extends Fragment {
         mCallback = null;
     }
 
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -136,8 +160,6 @@ public class Person extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onPersonFragmentInteraction(Uri uri);
-
         Context getContext();
     }
 }

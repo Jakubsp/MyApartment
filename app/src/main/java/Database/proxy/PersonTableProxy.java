@@ -15,7 +15,7 @@ public abstract class PersonTableProxy {
 
     protected abstract int update(Person person);
 
-    protected abstract Collection<Person> select();
+    protected abstract Collection<Person> selectAll();
 
     protected abstract Person selectOne(int id);
 
@@ -30,7 +30,7 @@ public abstract class PersonTableProxy {
         return getInstance().update(person);
     }
 
-    public static Collection<Person> Select() {
-        return getInstance().select();
+    public static Collection<Person> SelectAll() {
+        return getInstance().selectAll();
     }
 }

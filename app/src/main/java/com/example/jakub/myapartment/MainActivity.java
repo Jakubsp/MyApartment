@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Database.DBConnect;
 import Database.proxy.PersonTableProxy;
 
 public class MainActivity extends AppCompatActivity
@@ -85,17 +86,13 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_slideshow) {
-
+        if (id == R.id.nav_apartment) {
+            fr = new Apartment();
         } else if (id == R.id.nav_person) {
             fr = new Person();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_overview) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_weekProgram) {
 
         }
 
@@ -110,8 +107,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPersonFragmentInteraction(Uri uri) {
-
+    protected void onDestroy() {
+        super.onDestroy();
+        DBConnect.getInstance().closeConnection();
     }
 
     @Override
@@ -119,8 +117,4 @@ public class MainActivity extends AppCompatActivity
         return getApplicationContext();
     }
 
-    @Override
-    public void onApartmentFragmentInteraction(Uri uri) {
-
-    }
 }

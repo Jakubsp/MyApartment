@@ -5,12 +5,37 @@
     android:layout_height="match_parent"
     tools:context=".Person">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <ListView
-        android:id="@+id/lvPerson"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/srlPerson">
+
+
+
+        <ListView
+            android:id="@+id/lvPerson"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </ListView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnAddPerson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+    </FrameLayout>
+
 </FrameLayout>

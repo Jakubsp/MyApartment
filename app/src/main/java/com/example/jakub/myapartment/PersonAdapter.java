@@ -33,7 +33,7 @@ public class PersonAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return personCollection.toArray()[position];
+        return ((List<Database.Person>)personCollection).get(position);
     }
 
     @Override
@@ -45,7 +45,9 @@ public class PersonAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.listview_entry_person, null);
         TextView personName = convertView.findViewById(R.id.txvPersonName);
-        personName.setText((((List<Database.Person>)personCollection).get(position).getName()));
+        personName.setText(((List<Database.Person>)personCollection).get(position).getName());
+        TextView personEmail = convertView.findViewById(R.id.txvPersonEmail);
+        personEmail.setText(((List<Database.Person>)personCollection).get(position).getEmail());
         return convertView;
     }
 }

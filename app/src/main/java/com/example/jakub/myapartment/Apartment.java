@@ -1,12 +1,21 @@
 package com.example.jakub.myapartment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import Database.DBConnect;
+import Database.proxy.ApartmentTableProxy;
 
 
 /**
@@ -17,7 +26,7 @@ import android.view.ViewGroup;
  * Use the {@link Apartment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Apartment extends Fragment {
+public class Apartment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,10 +36,27 @@ public class Apartment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mCallback;
+    private Context context;
+
+    ListView lvApartment;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public Apartment() {
         // Required empty public constructor
+    }
+
+    private void connectToDb() {
+        SharedPreferences shaPref = getContext().getSharedPreferences("DBinitials", Context.MODE_PRIVATE);
+        DBConnect.getInstance().newConnection(shaPref.getString("address", "127.0.0.1"),
+                shaPref.getString("database", "apartments"),
+                shaPref.getString("user", "admin"),
+                shaPref.getString("password", "password"));
+        boolean connected = false;
+        if (DBConnect.getInstance().getConnection() != null)
+            connected = true;
+
+        Toast.makeText(getContext().getApplicationContext(), connected?"Spojení navázáno":"Nebylo možné se připojit", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -39,7 +65,7 @@ public class Apartment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Apartment.
+     * @return A new instance of fragment Database.Apartment.
      */
     // TODO: Rename and change types and number of parameters
     public static Apartment newInstance(String param1, String param2) {
@@ -67,28 +93,49 @@ public class Apartment extends Fragment {
         return inflater.inflate(R.layout.fragment_apartment, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onApartmentFragmentInteraction(uri);
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        lvApartment = getView().findViewById(R.id.lvApartment);
+        ApartmentAdapter apartmentAdapter = new ApartmentAdapter(getContext(), ApartmentTableProxy.SelectAll());
+        lvApartment.setAdapter(apartmentAdapter);
+
+
+        swipeRefreshLayout = getView().findViewById(R.id.srlApartment);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            mCallback = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+
+        context = mCallback.getContext();
+        if (DBConnect.getInstance().getConnection() == null) {
+            connectToDb();
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mCallback = null;
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
     }
 
     /**
@@ -102,6 +149,6 @@ public class Apartment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onApartmentFragmentInteraction(Uri uri);
+        Context getContext();
     }
 }
