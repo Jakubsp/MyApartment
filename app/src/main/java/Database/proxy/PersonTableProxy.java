@@ -11,26 +11,26 @@ public abstract class PersonTableProxy {
     }
 
     /** Abstraktní metody **/
-    protected abstract int insert(Person person);
+    protected abstract boolean insert(Person person);
 
-    protected abstract int update(Person person);
+    protected abstract boolean update(Person person);
+
+    protected abstract boolean delete(int idPerson);
 
     protected abstract Collection<Person> selectAll();
 
-    protected abstract Person selectOne(int id);
-
-    protected abstract int delete(int id);
-
     /** Statické metody **/
-    public static int Insert(Person person) {
+    public static boolean Insert(Person person) {
         return getInstance().insert(person);
     }
 
-    public static int Update(Person person) {
+    public static boolean Update(Person person) {
         return getInstance().update(person);
     }
 
     public static Collection<Person> SelectAll() {
         return getInstance().selectAll();
     }
+
+    public static boolean Delete(int idPerson) { return getInstance().delete(idPerson); }
 }

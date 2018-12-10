@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
 
     private OnFragmentInteractionListener mCallback;
     private Context context;
+    FloatingActionButton floatingActionButton;
 
     ListView lvPerson;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -108,6 +110,15 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
                 Database.Person person = (Database.Person)personAdapter.getItem(position);
 
                 Intent intent = new Intent(getContext(), PersonEdit.class);
+                intent.putExtra("id", person.getId());
+                intent.putExtra("name", person.getName());
+                intent.putExtra("companyName", person.getCompanyName());
+                intent.putExtra("email", person.getEmail());
+                intent.putExtra("nfcUid", person.getNfcUid());
+                intent.putExtra("rights", person.getRights());
+                intent.putExtra("dateOfBirth", person.getDateOfBirth());
+                intent.putExtra("superiorID", person.getSuperiorId());
+                intent.putExtra("task", person.getTask());
                 startActivity(intent);
             }
         });
@@ -115,6 +126,14 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         swipeRefreshLayout = getView().findViewById(R.id.srlPerson);
         swipeRefreshLayout.setOnRefreshListener(this);
 
+        floatingActionButton = getView().findViewById(R.id.btnAddPerson);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PersonEdit.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

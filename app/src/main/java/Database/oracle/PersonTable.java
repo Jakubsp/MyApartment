@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import Database.DBConnect;
 import Database.Person;
@@ -22,19 +22,90 @@ public class PersonTable extends PersonTableProxy {
     private Collection<Person> people;
 
     @Override
-    protected int insert(Person person) {
-        return 0;
+    protected boolean insert(final Person person) {
+
+        if (connection == null)
+            connection = DBConnect.getInstance().getConnection();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    preparedStatement = connection.prepareStatement(INSERT);
+                    preparedStatement.setNull(1, Types.NULL);
+                    preparedStatement.setString(2, person.getName());
+                    preparedStatement.setString(3, person.getCompanyName());
+                    preparedStatement.setNull(4, Types.NULL);
+                    preparedStatement.setString(5, person.getRights());
+                    preparedStatement.setString(6, person.getEmail());
+                    preparedStatement.setString(7, person.getNfcUid());
+                    preparedStatement.setString(8, person.getTask());
+                    preparedStatement.setInt(9, person.getSuperiorId());
+
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                    connection.commit();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
-    protected int update(Person person) {
-        return 0;
+    protected boolean update(Person person) {
+        return true;
+    }
+
+    @Override
+    protected boolean delete(final int idPerson) {
+
+        if (connection == null)
+            connection = DBConnect.getInstance().getConnection();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    preparedStatement = connection.prepareStatement(DELETE);
+                    preparedStatement.setInt(1, idPerson);
+
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                    connection.commit();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
     protected Collection<Person> selectAll() {
         people = new ArrayList<>();
-        if(connection == null)
+        if (connection == null)
             connection = DBConnect.getInstance().getConnection();
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -42,9 +113,10 @@ public class PersonTable extends PersonTableProxy {
                 try {
                     preparedStatement = connection.prepareStatement(SELECTALL);
                     resultSet = preparedStatement.executeQuery();
-                    while(resultSet.next()) {
+                    while (resultSet.next()) {
                         people.add(parse(resultSet));
                     }
+                    preparedStatement.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -58,16 +130,6 @@ public class PersonTable extends PersonTableProxy {
         }
 
         return people;
-    }
-
-    @Override
-    protected Person selectOne(int id) {
-        return null;
-    }
-
-    @Override
-    protected int delete(int id) {
-        return 0;
     }
 
 

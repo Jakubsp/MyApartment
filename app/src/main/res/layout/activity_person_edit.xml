@@ -104,6 +104,7 @@
             android:id="@+id/btnPersonDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onClickDelete"
             android:text="@string/btnDeletePerson" />
 
     </LinearLayout>
