@@ -23,6 +23,10 @@
     <string name="personCompanyName">Název společnosti</string>
     <string name="personRights">Práva</string>
     <string name="personTask">Úloha</string>
+    <string name="apartmentRenterName">Jméno nájemce</string>
+    <string name="apartmentFloor">Patro</string>
+    <string name="apartmentRooms">Počet pokojů</string>
+    <string name="apartmentUsableArea">Plocha</string>
 
     <string name="title_activity_person_edit">Uživatel</string>
 </resources>

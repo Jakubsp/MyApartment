@@ -19,6 +19,8 @@ public abstract class PersonTableProxy {
 
     protected abstract Collection<Person> selectAll();
 
+    protected abstract Person selectById(int id);
+
     /** Statické metody **/
     public static boolean Insert(Person person) {
         return getInstance().insert(person);
@@ -31,6 +33,8 @@ public abstract class PersonTableProxy {
     public static Collection<Person> SelectAll() {
         return getInstance().selectAll();
     }
+
+    public static Person SelectById(int id) { return getInstance().selectById(id); }
 
     public static boolean Delete(int idPerson) { return getInstance().delete(idPerson); }
 }

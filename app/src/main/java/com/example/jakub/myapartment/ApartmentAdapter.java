@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import Database.Apartment;
+import Database.proxy.PersonTableProxy;
 
 public class ApartmentAdapter extends BaseAdapter {
 
@@ -43,7 +44,16 @@ public class ApartmentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.listview_entry_apartment, null);
         TextView apartmentFloor = convertView.findViewById(R.id.txvApartmentFloor);
+        TextView apartmentRooms = convertView.findViewById(R.id.txvApartmentRooms);
+        TextView apartmentRenter = convertView.findViewById(R.id.txvApartmentRenter);
+        TextView apartmentUsableArea = convertView.findViewById(R.id.txvApartmentUsableArea);
+
+        int idRenter = ((List<Apartment>)apartmentCollection).get(position).getTenantId();
+        apartmentRenter.setText(PersonTableProxy.SelectById(idRenter).getName());
         apartmentFloor.setText(String.valueOf(((List<Apartment>)apartmentCollection).get(position).getFloor()));
+        apartmentRooms.setText(String.valueOf(((List<Apartment>)apartmentCollection).get(position).getRooms()));
+        apartmentUsableArea.setText(String.valueOf(((List<Apartment>)apartmentCollection).get(position).getUsableArea()));
+
         return convertView;
     }
 }

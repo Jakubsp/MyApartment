@@ -20,6 +20,7 @@ public class PersonTable extends PersonTableProxy {
     private ResultSet resultSet;
 
     private Collection<Person> people;
+    private Person person;
 
     @Override
     protected boolean insert(final Person person) {
@@ -130,6 +131,37 @@ public class PersonTable extends PersonTableProxy {
         }
 
         return people;
+    }
+
+    @Override
+    protected Person selectById(final int id) {
+        person = new Person();
+
+        if (connection == null)
+            connection = DBConnect.getInstance().getConnection();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    preparedStatement = connection.prepareStatement(SELECTBYID);
+                    preparedStatement.setInt(1, id);
+                    resultSet = preparedStatement.executeQuery();
+                    resultSet.next();
+                    person = parse(resultSet);
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return person;
     }
 
 

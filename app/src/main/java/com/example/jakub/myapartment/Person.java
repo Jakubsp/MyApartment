@@ -45,6 +45,8 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
     ListView lvPerson;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    PersonAdapter personAdapter;
+
     public Person() {
         // Required empty public constructor
     }
@@ -101,7 +103,7 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         super.onActivityCreated(savedInstanceState);
 
         lvPerson = getView().findViewById(R.id.lvPerson);
-        final PersonAdapter personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAll());
+        personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAll());
         lvPerson.setAdapter(personAdapter);
 
         lvPerson.setOnItemClickListener(new AdapterView.OnItemClickListener() {
