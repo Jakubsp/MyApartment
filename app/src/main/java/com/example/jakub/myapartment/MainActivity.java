@@ -25,7 +25,8 @@ import Database.DBConnect;
 import Database.proxy.PersonTableProxy;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Person.OnFragmentInteractionListener, Apartment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Person.OnFragmentInteractionListener, Apartment.OnFragmentInteractionListener,
+                    Overview.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_person) {
             fr = new Person();
         } else if (id == R.id.nav_overview) {
-
+            fr = new Overview();
         } else if (id == R.id.nav_weekProgram) {
 
         }

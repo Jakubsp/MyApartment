@@ -27,6 +27,12 @@
     <string name="apartmentFloor">Patro</string>
     <string name="apartmentRooms">Počet pokojů</string>
     <string name="apartmentUsableArea">Plocha</string>
+    <string name="overviewBtnHistory">Historie</string>
+    <string name="overviewBtnPrevious">Přechozí</string>
+    <string name="overviewBtnFollowing">Následující</string>
 
     <string name="title_activity_person_edit">Uživatel</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

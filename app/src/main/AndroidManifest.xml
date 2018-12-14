@@ -22,7 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Settings" />
-
         <activity
             android:name=".PersonEdit"
             android:label="@string/title_activity_person_edit">
