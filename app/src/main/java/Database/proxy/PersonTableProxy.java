@@ -2,12 +2,15 @@ package Database.proxy;
 
 import java.util.Collection;
 
+import Database.ConfigurationManager;
 import Database.Person;
 import Database.MySQL.PersonTable;
 
 public abstract class PersonTableProxy {
     private static PersonTableProxy getInstance() {
-        return new PersonTable();
+        if (ConfigurationManager.getInstance().getDatabaseType() == "MySQL")
+            return new Database.MySQL.PersonTable();
+        return new Database.XML.PersonTable();
     }
 
     /** Abstraktní metody **/

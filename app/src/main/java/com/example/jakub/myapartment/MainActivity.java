@@ -2,6 +2,7 @@ package com.example.jakub.myapartment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,12 +22,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Database.ConfigurationManager;
 import Database.DBConnect;
 import Database.proxy.PersonTableProxy;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Person.OnFragmentInteractionListener, Apartment.OnFragmentInteractionListener,
                     Overview.OnFragmentInteractionListener {
+
+    private SharedPreferences DBinitials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        DBinitials = getContext().getSharedPreferences("DBinitials", MODE_PRIVATE);
+        String address = DBinitials.getString("address", "127.0.0.1");
+        String database = DBinitials.getString("database", "apartments");
+        String user = DBinitials.getString("user", "admin");
+        String password = DBinitials.getString("password", "password");
+        String databaseType = DBinitials.getString("databasetype", "MySQL");
+        ConfigurationManager.getInstance().updateDatabaseType(databaseType);
+        ConfigurationManager.getInstance().updateParameters(address, database, user, password);
     }
 
     @Override
@@ -110,7 +123,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DBConnect.getInstance().closeConnection();
     }
 
     @Override
