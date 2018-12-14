@@ -1,4 +1,4 @@
-package Database.oracle;
+package Database.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ import Database.Apartment;
 import Database.DBConnect;
 import Database.proxy.ApartmentTableProxy;
 
-import static Database.oracle.ApartmentCmd.*;
+import static Database.MySQL.ApartmentCmd.*;
 
 public class ApartmentTable extends ApartmentTableProxy {
     private Connection connection = null;

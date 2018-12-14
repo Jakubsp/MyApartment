@@ -1,4 +1,4 @@
-package Database.oracle;
+package Database.MySQL;
 
 public abstract class PersonCmd {
     public static String SELECTALL = "SELECT * FROM PERSON";

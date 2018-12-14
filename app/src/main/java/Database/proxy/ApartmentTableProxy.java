@@ -3,7 +3,7 @@ package Database.proxy;
 import java.util.Collection;
 
 import Database.Apartment;
-import Database.oracle.ApartmentTable;
+import Database.MySQL.ApartmentTable;
 
 public abstract class ApartmentTableProxy {
     private static ApartmentTableProxy getInstance() { return new ApartmentTable(); }

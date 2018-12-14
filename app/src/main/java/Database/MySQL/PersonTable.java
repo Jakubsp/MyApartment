@@ -1,4 +1,4 @@
-package Database.oracle;
+package Database.MySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import Database.DBConnect;
 import Database.Person;
 import Database.proxy.PersonTableProxy;
 
-import static Database.oracle.PersonCmd.*;
+import static Database.MySQL.PersonCmd.*;
 
 public class PersonTable extends PersonTableProxy {
     private Connection connection = null;

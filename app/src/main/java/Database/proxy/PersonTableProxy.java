@@ -3,7 +3,7 @@ package Database.proxy;
 import java.util.Collection;
 
 import Database.Person;
-import Database.oracle.PersonTable;
+import Database.MySQL.PersonTable;
 
 public abstract class PersonTableProxy {
     private static PersonTableProxy getInstance() {
