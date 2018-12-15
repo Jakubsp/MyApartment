@@ -1,7 +1,6 @@
 package com.example.jakub.myapartment;
 
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -146,7 +145,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
             }
             break;
 
-            case XML:
+            case JSON:
             {
                 edtAddress.setEnabled(false);
                 edtDatabase.setEnabled(false);

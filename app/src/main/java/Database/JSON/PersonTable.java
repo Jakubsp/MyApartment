@@ -116,7 +116,24 @@ public class PersonTable extends PersonTableProxy {
 
     @Override
     protected boolean delete(int idPerson) {
-        return false;
+        try {
+            JSONObject jsonObject = new JSONObject(loadJSONFromFile());
+
+            JSONArray jsonPeople = jsonObject.getJSONArray("people");
+
+            for(int i = 0; i < jsonPeople.length(); i++) {
+                JSONObject obj = jsonPeople.getJSONObject(i);
+                if (obj.getInt("id") == idPerson)
+                    jsonPeople.remove(i);
+            }
+
+            saveJSONToFile(jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
@@ -134,7 +151,12 @@ public class PersonTable extends PersonTableProxy {
                 JSONObject person = jsonPeople.getJSONObject(i);
                 p.setId(person.getInt("id"));
                 p.setName(person.getString("name"));
-                // TODO načíst další parametry
+                p.setCompanyName(person.getString("companyName"));
+                p.setRights(person.getString("rights"));
+                p.setNfcUid(person.getString("nfcUid"));
+                p.setEmail(person.getString("email"));
+                p.setTask(person.getString("task"));
+                p.setSuperiorId(person.getInt("superiorId"));
                 ((ArrayList<Person>) people).add(p);
             }
 
@@ -148,6 +170,33 @@ public class PersonTable extends PersonTableProxy {
 
     @Override
     protected Person selectById(int id) {
-        return null;
+        Person person = new Person();
+        try {
+            JSONObject jsonObject = new JSONObject(loadJSONFromFile());
+
+            JSONArray jsonPeople = jsonObject.getJSONArray("people");
+
+            for(int i = 0; i < jsonPeople.length(); i++) {
+                JSONObject obj = jsonPeople.getJSONObject(i);
+                if (obj.getInt("id") == id)
+                {
+                    person.setId(obj.getInt("id"));
+                    person.setName(obj.getString("name"));
+                    person.setCompanyName(obj.getString("companyName"));
+                    person.setRights(obj.getString("rights"));
+                    person.setNfcUid(obj.getString("nfcUid"));
+                    person.setEmail(obj.getString("email"));
+                    person.setTask(obj.getString("task"));
+                    person.setSuperiorId(obj.getInt("superiorId"));
+                }
+            }
+
+            saveJSONToFile(jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return person;
     }
 }

@@ -1,5 +1,5 @@
 package Database;
 
 public enum DatabaseType {
-    MySQL, XML
+    MySQL, JSON
 }
