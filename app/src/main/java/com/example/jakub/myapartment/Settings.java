@@ -58,7 +58,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         // Spinner drop down elements
         List<String> categories = new ArrayList<>();
         categories.add("MySQL");
-        categories.add("XML");
+        categories.add("JSON");
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);

@@ -10,7 +10,7 @@ public abstract class ApartmentTableProxy {
     private static ApartmentTableProxy getInstance() {
         if (ConfigurationManager.getInstance().getDatabaseType() == DatabaseType.MySQL)
             return new Database.MySQL.ApartmentTable();
-        return new Database.XML.ApartmentTable();
+        return new Database.JSON.ApartmentTable();
     }
 
     /** Abstraktní metody **/

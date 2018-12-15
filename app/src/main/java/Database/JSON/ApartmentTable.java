@@ -1,4 +1,4 @@
-package Database.XML;
+package Database.JSON;
 
 import java.util.Collection;
 

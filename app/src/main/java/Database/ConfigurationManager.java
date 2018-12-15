@@ -7,6 +7,7 @@ public class ConfigurationManager {
     private String user;
     private String password;
     private DatabaseType databaseType;
+    private String jsonFileName;
 
     private static ConfigurationManager instance;
 
@@ -31,8 +32,16 @@ public class ConfigurationManager {
         this.password = password;
     }
 
+    public void updateJsonFileName(String name) {
+        this.jsonFileName = name;
+    }
+
     public DatabaseType getDatabaseType() {
         return this.databaseType;
+    }
+
+    public String getJsonFileName() {
+        return this.jsonFileName;
     }
 
     public String getServer() {

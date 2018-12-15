@@ -5,13 +5,12 @@ import java.util.Collection;
 import Database.ConfigurationManager;
 import Database.DatabaseType;
 import Database.Person;
-import Database.MySQL.PersonTable;
 
 public abstract class PersonTableProxy {
     private static PersonTableProxy getInstance() {
         if (ConfigurationManager.getInstance().getDatabaseType() == DatabaseType.MySQL)
             return new Database.MySQL.PersonTable();
-        return new Database.XML.PersonTable();
+        return new Database.JSON.PersonTable();
     }
 
     /** Abstraktní metody **/
