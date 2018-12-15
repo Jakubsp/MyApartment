@@ -24,6 +24,7 @@ import android.view.MenuItem;
 
 import Database.ConfigurationManager;
 import Database.DBConnect;
+import Database.DatabaseType;
 import Database.proxy.PersonTableProxy;
 
 public class MainActivity extends AppCompatActivity
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         String database = DBinitials.getString("database", "apartments");
         String user = DBinitials.getString("user", "admin");
         String password = DBinitials.getString("password", "password");
-        String databaseType = DBinitials.getString("databasetype", "MySQL");
+        DatabaseType databaseType = DatabaseType.valueOf(DBinitials.getString("databasetype", "MySQL"));
         ConfigurationManager.getInstance().updateDatabaseType(databaseType);
         ConfigurationManager.getInstance().updateParameters(address, database, user, password);
     }

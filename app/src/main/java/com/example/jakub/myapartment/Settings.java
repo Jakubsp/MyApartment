@@ -17,6 +17,7 @@ import java.util.List;
 
 import Database.ConfigurationManager;
 import Database.DBConnect;
+import Database.DatabaseType;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -33,7 +34,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     private String database;
     private String user;
     private String password;
-    private String databaseType;
+    private DatabaseType databaseType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +43,14 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
 
         DBinitials = getApplicationContext().getSharedPreferences("DBinitials", MODE_PRIVATE);
 
-        loadValues();
-        showValues();
-
         edtAddress = findViewById(R.id.edtHostdb);
         edtDatabase = findViewById(R.id.edtNamedb);
         edtUser = findViewById(R.id.edtUserdb);
         edtPassword = findViewById(R.id.edtPassworddb);
         btnTestConn = findViewById(R.id.btnTestConn);
+
+        loadValues();
+        showValues();
 
         spinner = findViewById(R.id.spinnerSettings);
         spinner.setOnItemSelectedListener(this);
@@ -67,7 +68,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
 
         // attach data adapter to spinner
         spinner.setAdapter(dataAdapter);
-        spinner.setSelection(dataAdapter.getPosition(databaseType));
+        spinner.setSelection(dataAdapter.getPosition(databaseType.toString()));
     }
 
     private void loadValues() {
@@ -75,7 +76,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         database = DBinitials.getString("database", "apartments");
         user = DBinitials.getString("user", "admin");
         password = DBinitials.getString("password", "password");
-        databaseType = DBinitials.getString("databasetype", "MySQL");
+        databaseType = DatabaseType.valueOf(DBinitials.getString("databasetype", "MySQL"));
         ConfigurationManager.getInstance().updateParameters(address, database, user, password);
         ConfigurationManager.getInstance().updateDatabaseType(databaseType);
     }
@@ -105,12 +106,12 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         editor.putString("database", database);
         editor.putString("user", user);
         editor.putString("password", password);
-        editor.putString("databasetype", databaseType);
+        editor.putString("databasetype", databaseType.toString());
 
         ConfigurationManager.getInstance().updateParameters(address, database, user, password);
         ConfigurationManager.getInstance().updateDatabaseType(databaseType);
 
-        if (databaseType == "MySQL")
+        if (databaseType == DatabaseType.MySQL)
             DBConnect.getInstance().newConnection();
 
         editor.commit();
@@ -133,9 +134,9 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        databaseType = spinner.getItemAtPosition(position).toString();
+        databaseType = DatabaseType.valueOf(spinner.getItemAtPosition(position).toString());
         switch(databaseType) {
-            case "MySQL":
+            case MySQL:
             {
                 edtAddress.setEnabled(true);
                 edtDatabase.setEnabled(true);
@@ -145,7 +146,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
             }
             break;
 
-            case "XML":
+            case XML:
             {
                 edtAddress.setEnabled(false);
                 edtDatabase.setEnabled(false);

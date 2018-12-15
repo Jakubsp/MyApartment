@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,7 +22,9 @@ public class DBConnect{
             public void run() {
                 try {
                     Class.forName("com.mysql.jdbc.Driver");
-                    connection = DriverManager.getConnection(ConfigurationManager.getInstance().getServer());
+                    String server = ConfigurationManager.getInstance().getServer();
+                    connection = DriverManager.getConnection(server);
+                    server = ConfigurationManager.getInstance().getServer();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -58,7 +61,6 @@ public class DBConnect{
     public void closeConnection() {
         try {
             connection.close();
-            connection = null;
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -6,7 +6,7 @@ public class ConfigurationManager {
     private String database;
     private String user;
     private String password;
-    private String databaseType;
+    private DatabaseType databaseType;
 
     private static ConfigurationManager instance;
 
@@ -20,7 +20,7 @@ public class ConfigurationManager {
         return instance;
     }
 
-    public void updateDatabaseType(String type) {
+    public void updateDatabaseType(DatabaseType type) {
         this.databaseType = type;
     }
 
@@ -31,7 +31,7 @@ public class ConfigurationManager {
         this.password = password;
     }
 
-    public String getDatabaseType() {
+    public DatabaseType getDatabaseType() {
         return this.databaseType;
     }
 

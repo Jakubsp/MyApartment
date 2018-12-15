@@ -51,19 +51,6 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         // Required empty public constructor
     }
 
-    private void connectToDb() {
-        SharedPreferences shaPref = getContext().getSharedPreferences("DBinitials", Context.MODE_PRIVATE);
-        DBConnect.getInstance().newConnection(shaPref.getString("address", "127.0.0.1"),
-                shaPref.getString("database", "apartments"),
-                shaPref.getString("user", "admin"),
-                shaPref.getString("password", "password"));
-        boolean connected = false;
-        if (DBConnect.getInstance().getConnection() != null)
-            connected = true;
-
-        Toast.makeText(getContext().getApplicationContext(), connected?"Spojení navázáno":"Nebylo možné se připojit", Toast.LENGTH_SHORT).show();
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -149,9 +136,6 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         }
 
         context = mCallback.getContext();
-        if (DBConnect.getInstance().getConnection() == null) {
-            connectToDb();
-        }
     }
 
     @Override
