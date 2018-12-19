@@ -25,6 +25,8 @@ public class ApartmentTable extends ApartmentTableProxy {
         apartments = new ArrayList<>();
         if (connection == null)
             connection = DBConnect.getInstance().getConnection();
+        if (connection == null)
+            return apartments;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

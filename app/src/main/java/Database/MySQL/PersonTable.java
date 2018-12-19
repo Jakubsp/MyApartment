@@ -28,6 +28,9 @@ public class PersonTable extends PersonTableProxy {
         if (connection == null)
             connection = DBConnect.getInstance().getConnection();
 
+        if (connection == null)
+            return false;
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -65,22 +68,27 @@ public class PersonTable extends PersonTableProxy {
     }
 
     @Override
-    protected boolean update(Person person) {
-        return true;
-    }
-
-    @Override
-    protected boolean delete(final int idPerson) {
-
+    protected boolean update(final Person person) {
         if (connection == null)
             connection = DBConnect.getInstance().getConnection();
+
+        if (connection == null)
+            return false;
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    preparedStatement = connection.prepareStatement(DELETE);
-                    preparedStatement.setInt(1, idPerson);
+                    preparedStatement = connection.prepareStatement(UPDATE);
+                    preparedStatement.setString(1, person.getName());
+                    preparedStatement.setString(2, person.getCompanyName());
+                    preparedStatement.setNull(3, Types.NULL);
+                    preparedStatement.setString(4, person.getRights());
+                    preparedStatement.setString(5, person.getEmail());
+                    preparedStatement.setString(6, person.getNfcUid());
+                    preparedStatement.setString(7, person.getTask());
+                    preparedStatement.setInt(8, person.getSuperiorId());
+                    preparedStatement.setInt(9, person.getId());
 
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
@@ -104,10 +112,47 @@ public class PersonTable extends PersonTableProxy {
     }
 
     @Override
+    protected boolean delete(final int idPerson) {
+
+        if (connection == null)
+            connection = DBConnect.getInstance().getConnection();
+
+        if (connection == null)
+            return false;
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    preparedStatement = connection.prepareStatement(DELETE);
+                    preparedStatement.setInt(1, idPerson);
+
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
     protected Collection<Person> selectAll() {
         people = new ArrayList<>();
         if (connection == null)
             connection = DBConnect.getInstance().getConnection();
+        if (connection == null)
+            return people;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -134,11 +179,45 @@ public class PersonTable extends PersonTableProxy {
     }
 
     @Override
+    protected Collection<Person> selectAllUsers() {
+        people = new ArrayList<>();
+        if (connection == null)
+            connection = DBConnect.getInstance().getConnection();
+        if (connection == null)
+        return people;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    preparedStatement = connection.prepareStatement(SELECTALLUSERS);
+                    resultSet = preparedStatement.executeQuery();
+                    while (resultSet.next()) {
+                        people.add(parse(resultSet));
+                    }
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return people;
+    }
+
+    @Override
     protected Person selectById(final int id) {
         person = new Person();
 
         if (connection == null)
             connection = DBConnect.getInstance().getConnection();
+        if (connection == null)
+            return person;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

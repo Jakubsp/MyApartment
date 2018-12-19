@@ -23,6 +23,7 @@
     <string name="personCompanyName">Název společnosti</string>
     <string name="personRights">Práva</string>
     <string name="personTask">Úloha</string>
+    <string name="personSuperiorId">Nadřízená osoba</string>
     <string name="apartmentRenterName">Jméno nájemce</string>
     <string name="apartmentFloor">Patro</string>
     <string name="apartmentRooms">Počet pokojů</string>
@@ -30,9 +31,14 @@
     <string name="overviewBtnHistory">Historie</string>
     <string name="overviewBtnPrevious">Přechozí</string>
     <string name="overviewBtnFollowing">Následující</string>
+    <string name="overviewTxvDate">Datum</string>
+    <string name="overviewTxvWater">Spotřeba vody</string>
+    <string name="overviewTxvGas">Spotřeba plynu</string>
+    <string name="overviewTxvElectricity">Spotřeba elekřiny</string>
+    <string name="overviewTxvAvgTemp">Průměrná teplota</string>
+    <string name="overviewTxvTenant">Nájemce</string>
 
     <string name="title_activity_person_edit">Uživatel</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

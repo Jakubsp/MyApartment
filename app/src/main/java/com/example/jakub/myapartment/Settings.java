@@ -113,6 +113,7 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         if (databaseType == DatabaseType.MySQL)
             DBConnect.getInstance().newConnection();
 
+
         editor.commit();
         onBackPressed();
     }

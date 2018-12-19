@@ -16,7 +16,7 @@ import Database.proxy.PersonTableProxy;
 public class ApartmentAdapter extends BaseAdapter {
 
     Context context;
-    Collection<Apartment> apartmentCollection;
+    Collection<Database.Apartment> apartmentCollection;
     LayoutInflater layoutInflater;
 
     public ApartmentAdapter(Context context, Collection<Apartment> apartmentCollection) {
@@ -32,7 +32,7 @@ public class ApartmentAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return ((List<Database.Apartment>)apartmentCollection).get(position);
     }
 
     @Override

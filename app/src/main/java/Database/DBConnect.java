@@ -17,17 +17,18 @@ public class DBConnect{
     private static DBConnect instance = null;
 
     private DBConnect() {
+        DBConnect();
+    }
+
+    private void DBConnect() {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Class.forName("com.mysql.jdbc.Driver");
                     String server = ConfigurationManager.getInstance().getServer();
                     connection = DriverManager.getConnection(server);
                     server = ConfigurationManager.getInstance().getServer();
                 } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
@@ -41,8 +42,13 @@ public class DBConnect{
     }
 
     public Connection getConnection() {
-        if (connection == null)
-            new DBConnect();
+        try {
+            if (connection == null || connection.isClosed()){
+                DBConnect();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
 
@@ -55,7 +61,7 @@ public class DBConnect{
     public void newConnection() {
         if (connection != null)
             closeConnection();
-        new DBConnect();
+        DBConnect();
     }
 
     public void closeConnection() {

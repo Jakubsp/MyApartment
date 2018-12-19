@@ -1,6 +1,7 @@
 package com.example.jakub.myapartment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class Apartment extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
     ListView lvApartment;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    ApartmentAdapter apartmentAdapter = null;
 
     public Apartment() {
         // Required empty public constructor
@@ -85,12 +89,36 @@ public class Apartment extends Fragment implements SwipeRefreshLayout.OnRefreshL
         super.onActivityCreated(savedInstanceState);
 
         lvApartment = getView().findViewById(R.id.lvApartment);
-        ApartmentAdapter apartmentAdapter = new ApartmentAdapter(getContext(), ApartmentTableProxy.SelectAll());
-        lvApartment.setAdapter(apartmentAdapter);
+        apartmentAdapter = new ApartmentAdapter(getContext(), ApartmentTableProxy.SelectAll());
+        RefreshList();
 
+        lvApartment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Database.Apartment apartment = (Database.Apartment)apartmentAdapter.getItem(position);
+
+                Intent intent = new Intent(getContext(), Overview.class);
+                intent.putExtra("apartment_id", apartment.getId());
+                intent.putExtra("person_id", apartment.getTenantId());
+                startActivity(intent);
+            }
+        });
 
         swipeRefreshLayout = getView().findViewById(R.id.srlApartment);
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private void RefreshList() {
+        if (lvApartment.getAdapter() == null)
+            lvApartment.setAdapter(apartmentAdapter);
+        else {
+            apartmentAdapter = new ApartmentAdapter(getContext(), ApartmentTableProxy.SelectAll());
+            lvApartment.setAdapter(apartmentAdapter);
+            apartmentAdapter.notifyDataSetChanged();
+            lvApartment.invalidate();
+            lvApartment.invalidateViews();
+            lvApartment.refreshDrawableState();
+        }
     }
 
     @Override
@@ -120,6 +148,7 @@ public class Apartment extends Fragment implements SwipeRefreshLayout.OnRefreshL
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 5000);
+        RefreshList();
     }
 
     /**

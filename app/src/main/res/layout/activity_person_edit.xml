@@ -55,14 +55,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/personBirth" />
+            android:text="@string/personEmail" />
 
         <EditText
-            android:id="@+id/etPersonEditBirth"
+            android:id="@+id/etPersonEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date" />
+            android:clickable="true"
+            android:inputType="none" />
 
         <TextView
             android:layout_width="match_parent"

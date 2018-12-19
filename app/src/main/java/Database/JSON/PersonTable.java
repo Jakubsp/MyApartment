@@ -111,7 +111,10 @@ public class PersonTable extends PersonTableProxy {
 
     @Override
     protected boolean update(Person person) {
-        return false;
+        delete(person.getId());
+        insert(person);
+
+        return true;
     }
 
     @Override
@@ -149,6 +152,43 @@ public class PersonTable extends PersonTableProxy {
             for(int i = 0; i < jsonPeople.length(); i++) {
                 Person p = new Person();
                 JSONObject person = jsonPeople.getJSONObject(i);
+                p.setId(person.getInt("id"));
+                p.setName(person.getString("name"));
+                p.setCompanyName(person.getString("companyName"));
+                p.setRights(person.getString("rights"));
+                p.setNfcUid(person.getString("nfcUid"));
+                p.setEmail(person.getString("email"));
+                p.setTask(person.getString("task"));
+                p.setSuperiorId(person.getInt("superiorId"));
+                ((ArrayList<Person>) people).add(p);
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return people;
+    }
+
+    @Override
+    protected Collection<Person> selectAllUsers() {
+        Collection<Person> people = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(loadJSONFromFile());
+            JSONArray jsonPeople = jsonObject.getJSONArray("people");
+            if (jsonPeople.length() <= 0)
+                return people;
+
+            for(int i = 0; i < jsonPeople.length(); i++) {
+                JSONObject person = jsonPeople.getJSONObject(i);
+                /*if (!person.getString("rights").equals("OWN") &&
+                        !person.getString("rights").equals("REN") &&
+                        !person.getString("rights").equals("USR"))
+                    continue;*/
+
+                Person p = new Person();
                 p.setId(person.getInt("id"));
                 p.setName(person.getString("name"));
                 p.setCompanyName(person.getString("companyName"));

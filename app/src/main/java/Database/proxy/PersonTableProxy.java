@@ -8,7 +8,7 @@ import Database.Person;
 
 public abstract class PersonTableProxy {
     private static PersonTableProxy getInstance() {
-        if (ConfigurationManager.getInstance().getDatabaseType() == DatabaseType.MySQL)
+        if (ConfigurationManager.getInstance().getDatabaseType().equals(DatabaseType.MySQL))
             return new Database.MySQL.PersonTable();
         return new Database.JSON.PersonTable();
     }
@@ -22,6 +22,8 @@ public abstract class PersonTableProxy {
 
     protected abstract Collection<Person> selectAll();
 
+    protected abstract Collection<Person> selectAllUsers();
+
     protected abstract Person selectById(int id);
 
     /** Statické metody **/
@@ -33,9 +35,9 @@ public abstract class PersonTableProxy {
         return getInstance().update(person);
     }
 
-    public static Collection<Person> SelectAll() {
-        return getInstance().selectAll();
-    }
+    public static Collection<Person> SelectAll() { return getInstance().selectAll(); }
+
+    public static Collection<Person> SelectAllUsers() { return getInstance().selectAllUsers(); }
 
     public static Person SelectById(int id) { return getInstance().selectById(id); }
 

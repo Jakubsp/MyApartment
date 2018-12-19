@@ -1,100 +1,44 @@
 package com.example.jakub.myapartment;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
+import Database.proxy.PersonTableProxy;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Overview.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Overview#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Overview extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class Overview extends AppCompatActivity {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView txvApartmentId;
+    private TextView txvTenantName;
+    private TextView txvDate;
+    private TextView txvGas;
+    private TextView txvElectricity;
+    private TextView txvAvgTemp;
 
-    private OnFragmentInteractionListener mListener;
-
-    public Overview() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Overview.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Overview newInstance(String param1, String param2) {
-        Overview fragment = new Overview();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private int apartmentId = -1;
+    private Database.Person tenant;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setContentView(R.layout.activity_overview);
+
+        Intent intent = getIntent();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            apartmentId = extras.getInt("apartment_id");
+            tenant = PersonTableProxy.SelectById(extras.getInt("person_id"));
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_overview, container, false);
-    }
+        txvApartmentId = findViewById(R.id.txvOverviewApartmentName);
+        txvTenantName = findViewById(R.id.txvOverviewTenant);
+        txvDate = findViewById(R.id.txvOverviewDate);
+        txvGas = findViewById(R.id.txvOverviewGas);
+        txvElectricity = findViewById(R.id.txvOverviewElectricity);
+        txvAvgTemp = findViewById(R.id.txvOverviewAvgTemp);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        Context getContext();
+        txvApartmentId.setText("Byt č." + apartmentId);
+        txvTenantName.setText(tenant.getName());
     }
 }

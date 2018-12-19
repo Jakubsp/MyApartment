@@ -12,14 +12,6 @@
             android:id="@+id/nav_person"
             android:icon="@drawable/person"
             android:title="@string/nav_Person" />
-        <item
-            android:id="@+id/nav_overview"
-            android:icon="@drawable/overview"
-            android:title="@string/nav_Overview" />
-        <item
-            android:id="@+id/nav_weekProgram"
-            android:icon="@drawable/week_program"
-            android:title="@string/nav_WeekProgram" />
     </group>
 
 </menu>

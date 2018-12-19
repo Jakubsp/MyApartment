@@ -34,8 +34,7 @@ import Database.DatabaseType;
 import Database.proxy.PersonTableProxy;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Person.OnFragmentInteractionListener, Apartment.OnFragmentInteractionListener,
-                    Overview.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Person.OnFragmentInteractionListener, Apartment.OnFragmentInteractionListener {
 
     private SharedPreferences DBinitials;
 
@@ -54,6 +53,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (ClassNotFoundException|IllegalAccessException|InstantiationException e) {
+            e.printStackTrace();
+        }
 
         DBinitials = getContext().getSharedPreferences("DBinitials", MODE_PRIVATE);
         String address = DBinitials.getString("address", "127.0.0.1");
@@ -126,10 +131,6 @@ public class MainActivity extends AppCompatActivity
             fr = new Apartment();
         } else if (id == R.id.nav_person) {
             fr = new Person();
-        } else if (id == R.id.nav_overview) {
-            fr = new Overview();
-        } else if (id == R.id.nav_weekProgram) {
-
         }
 
         FragmentManager fm = getSupportFragmentManager();

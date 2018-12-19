@@ -90,8 +90,8 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         super.onActivityCreated(savedInstanceState);
 
         lvPerson = getView().findViewById(R.id.lvPerson);
-        personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAll());
-        lvPerson.setAdapter(personAdapter);
+        personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAllUsers());
+        RefreshList();
 
         lvPerson.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,7 +108,7 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
                 intent.putExtra("dateOfBirth", person.getDateOfBirth());
                 intent.putExtra("superiorID", person.getSuperiorId());
                 intent.putExtra("task", person.getTask());
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -120,9 +120,31 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), PersonEdit.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
+    }
+
+    private void RefreshList() {
+        if (lvPerson.getAdapter() == null)
+            lvPerson.setAdapter(personAdapter);
+        else {
+            personAdapter = new PersonAdapter(getContext(), PersonTableProxy.SelectAllUsers());
+            lvPerson.setAdapter(personAdapter);
+            personAdapter.notifyDataSetChanged();
+            lvPerson.invalidate();
+            lvPerson.invalidateViews();
+            lvPerson.refreshDrawableState();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            RefreshList();
+        }
     }
 
     @Override
@@ -149,9 +171,11 @@ public class Person extends Fragment implements SwipeRefreshLayout.OnRefreshList
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 5000);
+        RefreshList();
     }
 
     /**
