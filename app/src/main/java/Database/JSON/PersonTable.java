@@ -1,6 +1,7 @@
 package Database.JSON;
 
 import android.os.Environment;
+import android.util.JsonReader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,8 +112,35 @@ public class PersonTable extends PersonTableProxy {
 
     @Override
     protected boolean update(Person person) {
-        delete(person.getId());
-        insert(person);
+
+        try {
+            JSONObject jsonObject = new JSONObject(loadJSONFromFile());
+            JSONArray jsonPeople = jsonObject.getJSONArray("people");
+            JSONObject jsonPerson = jsonPeople.getJSONObject(0);
+
+            for(int i = 0; i < jsonPeople.length(); i++) {
+                jsonPerson = jsonPeople.getJSONObject(i);
+                if (jsonPerson.getInt("id") == person.getId()) {
+                    jsonPeople.remove(i);
+                    break;
+                }
+            }
+            jsonPerson.put("name", person.getName());
+            jsonPerson.put("companyName", person.getCompanyName());
+            jsonPerson.put("dateOfBirth", person.getDateOfBirth());
+            jsonPerson.put("rights", person.getRights());
+            jsonPerson.put("nfcUid", person.getNfcUid());
+            jsonPerson.put("email", person.getEmail());
+            jsonPerson.put("superiorId", person.getSuperiorId());
+            jsonPerson.put("task", person.getTask());
+
+            jsonPeople.put(jsonPerson);
+
+            saveJSONToFile(jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return true;
     }
