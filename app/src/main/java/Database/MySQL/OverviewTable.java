@@ -19,7 +19,7 @@ public class OverviewTable extends OverviewTableProxy {
     private ResultSet resultSet;
 
     private Collection<Overview> overviews;
-    Overview overview;
+    private Overview overview;
 
     @Override
     protected Collection<Overview> selectAll() {

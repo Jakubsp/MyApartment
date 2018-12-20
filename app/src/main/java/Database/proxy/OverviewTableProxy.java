@@ -8,9 +8,9 @@ import Database.Overview;
 
 public abstract class OverviewTableProxy {
     private static OverviewTableProxy getInstance() {
-        //if (ConfigurationManager.getInstance().getDatabaseType().equals(DatabaseType.MySQL))
+        if (ConfigurationManager.getInstance().getDatabaseType().equals(DatabaseType.MySQL))
             return new Database.MySQL.OverviewTable();
-        //return new Database.JSON.ApartmentTable();
+        return new Database.JSON.OverviewTable();
     }
 
     /** Abstraktní metody **/

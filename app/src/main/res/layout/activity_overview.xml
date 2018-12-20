@@ -25,7 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/overviewBtnPrevious" />
+                android:text="@string/overviewBtnPrevious"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txvOverviewApartmentName"
@@ -40,7 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/overviewBtnFollowing" />
+                android:text="@string/overviewBtnFollowing"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <Button
